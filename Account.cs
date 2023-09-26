@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BankProgram
+﻿namespace BankProgram
 {
     internal class Account
     {
+        int id;
+        int balance;
+
+        public Account(int i, int b)
+        {
+            this.id = i;
+            this.balance = b;
+
+        }
+        public int getId()
+        {
+            return id;
+        }
     }
 }
