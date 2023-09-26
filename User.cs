@@ -11,6 +11,11 @@
             this.password = p;
         }
 
+        public string GetPassWord()
+        {
+            return this.password;
+        }
+
         public string Name()
         {
             return this.name;

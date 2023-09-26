@@ -11,6 +11,13 @@
             this.balance = b;
 
         }
+
+        public int getBalance()
+        {
+            return balance;
+        }
+
+
         public int getId()
         {
             return id;

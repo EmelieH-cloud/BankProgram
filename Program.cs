@@ -1,7 +1,6 @@
 ﻿
 
 using BankProgram;
-
 bool isRunning = true;
 List<User> users = new();
 List<Account> accounts = new();
@@ -16,14 +15,14 @@ users.Add(u);
 accounts.Add(account1);
 users.Add(v);
 accounts.Add(account2);
-UserAccounts.Add(u.Name(), account1.getId());
-UserAccounts.Add(v.Name(), account2.getId());
+UserAccounts.Add(u.Name(), account1.getBalance());
+UserAccounts.Add(v.Name(), account2.getBalance());
 //---------------------------------------------//
 
 while (isRunning)
 {
     Console.WriteLine("WELCOME TO THE BANK");
-    Console.WriteLine("Are you a (c)ustomer or a (b)ank associate?");
+    Console.WriteLine("Are you a existing (c)ustomer or a (b)ank associate?");
     string answer = Console.ReadLine();
     if (answer.Equals("c"))
     {
@@ -40,7 +39,95 @@ while (isRunning)
             length = validateLength(username);
         }
 
+        LookforCustomer(username);
     }
+
+}
+
+void LookforCustomer(string u)
+{
+    int hits = 0;
+    int index = 0;
+    for (int i = 0; i < users.Count; i++)
+    {
+        string name = users[i].Name();
+        if (name.Equals(u))
+        {
+            hits++;
+            index = i;
+        }
+    }
+
+    if (hits == 1)
+    {
+        Console.WriteLine(hits + " hits " + "in the database.");
+        Console.WriteLine("Enter the password for username: " + u);
+        string p = Console.ReadLine();
+        passwordCheck(p, index);
+    }
+
+    else if (hits == 0)
+    {
+        Console.WriteLine("No hits on that username.");
+    }
+
+}
+
+void passwordCheck(string pass, int userIndex)
+{
+    User user = users[userIndex];
+    if (user.GetPassWord().Equals(pass))
+    {
+        Console.Clear();
+        Console.WriteLine("Access allowed!");
+        Console.WriteLine("Type (v) to view your bank account or (e) to deposit/withdraw money");
+        string action = Console.ReadLine();
+        if (action.Equals("v"))
+        {
+            int cash = findUserAccount(user);
+            if (cash == 0)
+            {
+                Console.WriteLine("No account found.");
+            }
+            else if (cash > 0)
+            {
+                Console.WriteLine("Current balance: " + cash + " sek");
+            }
+        }
+
+    }
+
+    else if (!user.GetPassWord().Equals(pass))
+    {
+        Console.Clear();
+        Console.WriteLine("Access denied.");
+    }
+}
+
+int findUserAccount(User u)
+{
+    string name = u.Name();
+    bool hasAccount;
+    int balance;
+    foreach (KeyValuePair<string, int> pair in UserAccounts)
+    {
+        if (UserAccounts.ContainsKey(name))
+        {
+            hasAccount = UserAccounts.TryGetValue(name, out balance);
+
+            if (hasAccount)
+            {
+                return balance;
+            }
+
+            else if (!hasAccount)
+            {
+                return 0;
+            }
+        }
+
+    }
+    return 0;
 
 }
 
@@ -79,5 +166,4 @@ void PrintRegister()
     {
         Console.WriteLine(pair.Key + " is the owner of account: " + pair.Value);
     }
-
 }
