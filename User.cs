@@ -16,7 +16,6 @@
             return this.name;
         }
 
-
         public string UserData()
         {
             return $"Name: {this.name} - Password: {this.password}";
